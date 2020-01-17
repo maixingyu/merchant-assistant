@@ -1,0 +1,29 @@
+#部署到Nginx的配置
+server:
+  port: 8082
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+    port-header: X-Forwarded-Port
+spring:
+  datasource:
+    url: jdbc:mysql://106.14.1.44:3306/merchant_assistant?characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: Mai123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+#开启驼峰命名转换
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+weChat:
+  appId: wx069b7dc66afc066d
+  appSecret: 4b80b43c0ea1e3ede324f7f57df22dd6
+file:
+  imgPath: /root/home/nginx/merchant-assistant/images/
+header:
+  origin: http://www.hellome.fun
+
+
