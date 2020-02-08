@@ -1,11 +1,12 @@
-package com.team.merchantassistant.service.client;
+package com.team.merchantassistant.service.merchant;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.team.merchantassistant.bean.WebUser;
 import com.team.merchantassistant.config.RestTemplateConfig;
-import com.team.merchantassistant.mapper.ClientUserMapper;
+import com.team.merchantassistant.mapper.CustomerUserMapper;
+import com.team.merchantassistant.mapper.MerchantUserMapper;
 import com.team.merchantassistant.mapper.WebUserMapper;
 import com.team.merchantassistant.utils.JwtUtils;
 import com.team.merchantassistant.utils.ResultsUtils;
@@ -15,10 +16,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -28,12 +29,14 @@ import java.util.Map;
  * @Date 2020/1/13 11:44
  **/
 @Service
-public class ClientUserService {
+public class MerchantUserService {
     @Autowired
     private RestTemplateConfig restTemplate;
-    @Resource
-    private ClientUserMapper clientUserMapper;
-    @Resource
+    @Autowired
+    private MerchantUserMapper merchantUserMapper;
+    @Autowired
+    private CustomerUserMapper customerUserMapper;
+    @Autowired
     private WebUserMapper webUserMapper;
     @Value("${weChat.appId}")
     private String appId;
@@ -46,7 +49,8 @@ public class ClientUserService {
      * @param code 小程序返回腾讯服务端返回的code
      * @return authorization
      */
-    public Map<String, Object> clientLoginService(String code) {
+    @Transactional
+    public Map<String, Object> merchantLoginService(String code) {
         String url = "https://api.weixin.qq.com/sns/jscode2session";
         String grant_type = "authorization_code";
         //设置请求body
@@ -62,9 +66,13 @@ public class ClientUserService {
         JSONObject jsonObject = JSON.parseObject(response.getBody());
         //获得openid
         String openid = jsonObject.getString("openid");
-        //查询openid是否已经在数据库中存在，如果不存在则添加
-        if (clientUserMapper.findIdByOpenid(openid) == null) {
-            clientUserMapper.addClientUser(openid);
+        //查询openid是否已经在商户表中存在，如果不存在则添加
+        if (merchantUserMapper.findIdByOpenid(openid) == null) {
+            merchantUserMapper.addClientUser(openid);
+        }
+        //查询openid是否已经在客户表中存在，如果不存在则添加
+        if (customerUserMapper.findIdByOpenid(openid) == null) {
+            customerUserMapper.addClientUser(openid);
         }
         //返回authorization
         String authorization = JwtUtils.getClientAuthorization(openid, jsonObject.getString("session_key"));
@@ -76,11 +84,11 @@ public class ClientUserService {
      * @param authorization token
      * @return 是否授权的标识
      */
-    public Map<String, Object> clientIsBindService(String authorization) {
+    public Map<String, Object> merchantIsBindService(String authorization) {
         //从authorization中获得openid
         String openid = JWT.decode(authorization).getClaim("openid").asString();
         //如果没有绑定过web端账号返回false，否则返回true
-        if (clientUserMapper.findAIdByOpenId(openid) == null) {
+        if (merchantUserMapper.findWIdByOpenId(openid) == null) {
             return ResultsUtils.successWhitData("bindFlag", false);
         } else {
             return ResultsUtils.successWhitData("bindFlag", true);
@@ -94,24 +102,24 @@ public class ClientUserService {
      * @param authorization token
      * @return 绑定的结果
      */
-    public Map<String,Object> clientBindService(String username,String password,String authorization){
+    public Map<String,Object> merchantBindService(String username,String password,String authorization){
         //查询要绑定的用户名或者密码是否正确
         WebUser webUser=webUserMapper.findAdminUserByNameAndPwd(username, password);
         if (webUser==null){
             return ResultsUtils.userFailure();
         }else{
-            if (webUser.getCId()!=null){
+            if (webUser.getMId()!=null){
                 //如果用户已经绑定过了
                 return ResultsUtils.userIsBind();
             }else{
                 //从authorization中获得openid
                 String openid = JWT.decode(authorization).getClaim("openid").asString();
-                Integer cId=clientUserMapper.findIdByOpenid(openid);
+                Integer mId= merchantUserMapper.findIdByOpenid(openid);
                 Integer wId=webUser.getId();
                 //更新web_user表中的c_id
-                webUserMapper.updateCId(cId);
+                webUserMapper.updateCId(mId);
                 //更新client_user表中的w_id
-                clientUserMapper.updateWId(wId);
+                merchantUserMapper.updateWId(wId);
                 return ResultsUtils.success();
             }
         }

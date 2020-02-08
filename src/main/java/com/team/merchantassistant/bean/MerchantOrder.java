@@ -2,24 +2,24 @@ package com.team.merchantassistant.bean;
 
 import lombok.*;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
- * @ClassName Goods
+ * @ClassName MerchantOrder
  * @Description TODO
  * @Author mai
- * @Date 2020/1/16 18:34
+ * @Date 2020/1/24 20:47
  **/
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Goods {
+public class MerchantOrder {
     private Integer id;
-    private String name;
-    private Integer quantity;
-    private String unit;
+    private String orderNumber;
+    private BigDecimal money;
+    private String time;
     private String openid;
-    private List<OperateGoods> operateGoodsList;
+    private Integer mId;
 }

@@ -1,22 +1,22 @@
-package com.team.merchantassistant.controller.client;
+package com.team.merchantassistant.controller.merchant;
 
-import com.team.merchantassistant.service.client.ClientUserService;
+import com.team.merchantassistant.service.merchant.MerchantUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 /**
- * @ClassName ClientUserController
+ * @ClassName MerchantUserController
  * @Description TODO
  * @Author mai
  * @Date 2020/1/13 11:45
  **/
 @RestController
-@RequestMapping("/client/user")
-public class ClientUserController {
+@RequestMapping("/merchant/user")
+public class MerchantUserController {
     @Autowired
-    private ClientUserService clientUserService;
+    private MerchantUserService merchantUserService;
 
     /**
      * 微信小程序端登录
@@ -24,8 +24,8 @@ public class ClientUserController {
      * @return authorization
      */
     @PostMapping("/login")
-    public Map<String,Object> clientLoginController(@RequestParam("code") String code){
-        return clientUserService.clientLoginService(code);
+    public Map<String,Object> merchantLoginController(@RequestParam("code") String code){
+        return merchantUserService.merchantLoginService(code);
     }
 
     /**
@@ -34,8 +34,8 @@ public class ClientUserController {
      * @return 是否授权的标识
      */
     @PostMapping("/isBind")
-    public Map<String,Object> clientIsBindController(@RequestHeader("authorization") String authorization){
-        return clientUserService.clientIsBindService(authorization);
+    public Map<String,Object> merchantIsBindController(@RequestHeader("authorization") String authorization){
+        return merchantUserService.merchantIsBindService(authorization);
     }
 
     /**
@@ -46,8 +46,8 @@ public class ClientUserController {
      * @return 绑定的结果
      */
     @PostMapping("/bind")
-    public Map<String,Object> clientBindController(@RequestParam("username") String username,@RequestParam("password") String password,
+    public Map<String,Object> merchantBindController(@RequestParam("username") String username,@RequestParam("password") String password,
                                                    @RequestHeader("authorization") String authorization){
-        return clientUserService.clientBindService(username, password, authorization);
+        return merchantUserService.merchantBindService(username, password, authorization);
     }
 }

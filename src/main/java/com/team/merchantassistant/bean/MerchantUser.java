@@ -3,19 +3,18 @@ package com.team.merchantassistant.bean;
 import lombok.*;
 
 /**
- * @ClassName AdminUser
+ * @ClassName ClientUser
  * @Description TODO
  * @Author mai
- * @Date 2020/1/13 15:15
+ * @Date 2020/1/13 12:43
  **/
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class WebUser {
+public class MerchantUser {
     private Integer id;
-    private String username;
-    private String password;
-    private Integer mId;
+    private String openId;
+    private Integer wId;
 }

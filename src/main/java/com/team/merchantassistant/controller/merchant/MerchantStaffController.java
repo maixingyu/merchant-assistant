@@ -1,6 +1,6 @@
-package com.team.merchantassistant.controller.client;
+package com.team.merchantassistant.controller.merchant;
 
-import com.team.merchantassistant.service.client.ClientStaffService;
+import com.team.merchantassistant.service.merchant.MerchantStaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +14,10 @@ import java.util.Map;
  * @Date 2020/1/14 19:18
  **/
 @RestController
-@RequestMapping("/client/staff")
-public class ClientStaffController {
+@RequestMapping("/merchant/staff")
+public class MerchantStaffController {
     @Autowired
-    private ClientStaffService clientStaffService;
+    private MerchantStaffService merchantStaffService;
 
     /**
      * 获取初始化员工页面信息
@@ -26,8 +26,8 @@ public class ClientStaffController {
      * @return 员工信息列表
      */
     @GetMapping("/index")
-    public Map<String, Object> clientStaffIndexController(@RequestHeader("authorization") String authorization) {
-        return clientStaffService.clientStaffIndexService(authorization);
+    public Map<String, Object> merchantStaffIndexController(@RequestHeader("authorization") String authorization) {
+        return merchantStaffService.merchantStaffIndexService(authorization);
     }
 
     /**
@@ -44,12 +44,12 @@ public class ClientStaffController {
      * @return 添加是否成功标识信息
      */
     @PostMapping("/add")
-    public Map<String, Object> clientStaffAddController(@RequestHeader("authorization") String authorization,
+    public Map<String, Object> merchantStaffAddController(@RequestHeader("authorization") String authorization,
                                                         @RequestParam("name") String name, @RequestParam("sex") String sex,
                                                         @RequestParam("tel") String tel, @RequestParam("idCard") String idCard,
                                                         @RequestParam("address") String address, @RequestParam("remarks") String remarks,
                                                         @RequestParam("file") MultipartFile file) {
-        return clientStaffService.clientStaffAddService(authorization, name, sex, tel, idCard, address, remarks, file);
+        return merchantStaffService.merchantStaffAddService(authorization, name, sex, tel, idCard, address, remarks, file);
     }
 
     /**
@@ -60,8 +60,8 @@ public class ClientStaffController {
      * @return 是否修改成功标识
      */
     @PostMapping("/alterAvatar")
-    public Map<String, Object> clientStaffUpdateAvatarController(@RequestParam("id") Integer id, @RequestParam("file") MultipartFile file) {
-        return clientStaffService.clientStaffUpdateAvatarService(id, file);
+    public Map<String, Object> merchantStaffUpdateAvatarController(@RequestParam("id") Integer id, @RequestParam("file") MultipartFile file) {
+        return merchantStaffService.merchantStaffUpdateAvatarService(id, file);
     }
 
     /**
@@ -73,9 +73,9 @@ public class ClientStaffController {
      * @return 是否修改成功的标识
      */
     @PutMapping("/alterOther/{id}/{flag}/{value}")
-    public Map<String, Object> clientStaffUpdateOtherController(@PathVariable("id") Integer id, @PathVariable("flag") String flag,
+    public Map<String, Object> merchantStaffUpdateOtherController(@PathVariable("id") Integer id, @PathVariable("flag") String flag,
                                                                 @PathVariable("value") String value) {
-        return clientStaffService.clientStaffUpdateOtherService(id, flag, value);
+        return merchantStaffService.merchantStaffUpdateOtherService(id, flag, value);
     }
 
     /**
@@ -85,8 +85,8 @@ public class ClientStaffController {
      * @return 是否删除成功的标识
      */
     @DeleteMapping("/delete/{id}")
-    public Map<String, Object> clientStaffDeleteController(@PathVariable("id") Integer id) {
-        return clientStaffService.clientStaffDeleteService(id);
+    public Map<String, Object> merchantStaffDeleteController(@PathVariable("id") Integer id) {
+        return merchantStaffService.merchantStaffDeleteService(id);
     }
 
 }

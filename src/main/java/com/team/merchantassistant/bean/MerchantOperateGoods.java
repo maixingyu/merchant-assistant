@@ -13,7 +13,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class OperateGoods {
+public class MerchantOperateGoods {
     private Integer id;
     private Integer quantity;
     private String date;

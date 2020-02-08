@@ -31,7 +31,7 @@ public class SpringMVCConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         List<String> url = new ArrayList<>();
-        url.add("/client/user/login");
+        url.add("/merchant/user/login");
         url.add("/img/**");
         registry.addInterceptor(authorizationInterceptor).addPathPatterns("/**").excludePathPatterns(url);
         super.addInterceptors(registry);

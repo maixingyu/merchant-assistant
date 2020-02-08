@@ -1,7 +1,7 @@
-package com.team.merchantassistant.controller.client;
+package com.team.merchantassistant.controller.merchant;
 
-import com.team.merchantassistant.bean.Record;
-import com.team.merchantassistant.service.client.ClientRecordService;
+import com.team.merchantassistant.bean.MerchantRecord;
+import com.team.merchantassistant.service.merchant.MerchantRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +14,10 @@ import java.util.Map;
  * @Date 2020/1/13 16:33
  **/
 @RestController
-@RequestMapping("/client/record")
-public class ClientRecordController {
+@RequestMapping("/merchant/record")
+public class MerchantRecordController {
     @Autowired
-    private ClientRecordService clientRecordService;
+    private MerchantRecordService merchantRecordService;
 
     /**
      * 获取记账首页信息
@@ -26,19 +26,19 @@ public class ClientRecordController {
      * @return 记账首页信息
      */
     @GetMapping("/index")
-    public Map<String, Object> clientIndexRecordController(@RequestHeader("authorization") String authorization) {
-        return clientRecordService.clientIndexRecordService(authorization);
+    public Map<String, Object> merchantIndexRecordController(@RequestHeader("authorization") String authorization) {
+        return merchantRecordService.merchantIndexRecordService(authorization);
     }
 
     /**
      * 更新某条记账记录
      *
-     * @param record 记账记录
+     * @param merchantRecord 记账记录
      * @return 是否成功的标识
      */
     @PutMapping("/alter")
-    public Map<String, Object> clientUpdateRecordController(@RequestBody Record record) {
-        return clientRecordService.clientUpdateRecordService(record);
+    public Map<String, Object> merchantUpdateRecordController(@RequestBody MerchantRecord merchantRecord) {
+        return merchantRecordService.merchantUpdateRecordService(merchantRecord);
     }
 
     /**
@@ -48,8 +48,8 @@ public class ClientRecordController {
      * @return 是否成功的标识
      */
     @DeleteMapping("/delete/{id}")
-    public Map<String, Object> clientDeleteRecordController(@PathVariable("id") Integer id) {
-        return clientRecordService.clientDeleteRecordService(id);
+    public Map<String, Object> merchantDeleteRecordController(@PathVariable("id") Integer id) {
+        return merchantRecordService.merchantDeleteRecordService(id);
     }
 
     /**
@@ -59,20 +59,21 @@ public class ClientRecordController {
      * @return 记账记录列表
      */
     @GetMapping("/all")
-    public Map<String, Object> clientAllRecordController(@RequestHeader("authorization") String authorization) {
-        return clientRecordService.clientAllRecordService(authorization);
+    public Map<String, Object> merchantAllRecordController(@RequestHeader("authorization") String authorization) {
+        return merchantRecordService.merchantAllRecordService(authorization);
     }
 
     /**
      * 添加记账记录
      *
      * @param authorization token
-     * @param record        记账记录信息
+     * @param merchantRecord        记账记录信息
      * @return 是否成功标识
      */
     @PostMapping("/add")
-    public Map<String, Object> clientAddRecordController(@RequestHeader("authorization") String authorization, @RequestBody Record record) {
-        return clientRecordService.clientAddRecordService(authorization, record);
+    public Map<String, Object> merchantAddRecordController(@RequestHeader("authorization") String authorization,
+                                                           @RequestBody MerchantRecord merchantRecord) {
+        return merchantRecordService.merchantAddRecordService(authorization, merchantRecord);
     }
 
     /**
@@ -84,10 +85,10 @@ public class ClientRecordController {
      * @return 记账记录信息列表
      */
     @GetMapping("/statistics/{category}/{startDate}/{endDate}")
-    public Map<String, Object> clientStatisticsRecordController(@RequestHeader("authorization") String authorization,
+    public Map<String, Object> merchantStatisticsRecordController(@RequestHeader("authorization") String authorization,
                                                                 @PathVariable("category") String category,
                                                                 @PathVariable("startDate") String startDate,
                                                                 @PathVariable("endDate") String endDate) {
-        return clientRecordService.clientStatisticsRecordService(authorization, category, startDate, endDate);
+        return merchantRecordService.merchantStatisticsRecordService(authorization, category, startDate, endDate);
     }
 }
