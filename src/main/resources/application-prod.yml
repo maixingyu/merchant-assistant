@@ -24,6 +24,6 @@ weChat:
 file:
   imgPath: /root/home/nginx/merchant-assistant/images/
 header:
-  origin: http://www.hellome.fun
+  origin: http://merchant.hellome.fun
 
 
