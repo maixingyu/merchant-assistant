@@ -66,4 +66,26 @@ public class CustomerShopController {
     public Map<String, Object> customerShopAddOrderController(@RequestHeader("authorization") String authorization, MerchantOrder merchantOrder) {
         return customerShopService.customerShopAddOrderService(authorization, merchantOrder);
     }
+
+    /**
+     * 查询优惠券
+     * @param authorization 小程序的唯一标识
+     * @param mId 商户的外键
+     * @return 请求处理的结果
+     */
+    @GetMapping("/findDiscount/{mId}")
+    public Map<String,Object> customerShopFindDiscountController(@RequestHeader("authorization") String authorization,
+                                                                 @PathVariable("mId") Integer mId){
+        return customerShopService.customerShopFindDiscountService(authorization, mId);
+    }
+
+    /**
+     * 使用优惠券
+     * @param id 优惠券的id
+     * @return 请求处理结果
+     */
+    @DeleteMapping("/deleteDiscount/{id}")
+    public Map<String,Object> customerShopDeleteDiscountController(@PathVariable("id") Integer id){
+        return customerShopService.customerShopDeleteDiscountService(id);
+    }
 }

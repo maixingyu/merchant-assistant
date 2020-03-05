@@ -1,9 +1,11 @@
 package com.team.merchantassistant.service.customer;
 
 import com.auth0.jwt.JWT;
+import com.team.merchantassistant.bean.MerchantDiscount;
 import com.team.merchantassistant.bean.MerchantOrder;
 import com.team.merchantassistant.bean.MerchantVip;
 import com.team.merchantassistant.bean.WebUser;
+import com.team.merchantassistant.mapper.MerchantDiscountMapper;
 import com.team.merchantassistant.mapper.MerchantOrderMapper;
 import com.team.merchantassistant.mapper.MerchantVipMapper;
 import com.team.merchantassistant.mapper.WebUserMapper;
@@ -30,6 +32,8 @@ public class CustomerShopService {
     private MerchantVipMapper merchantVipMapper;
     @Autowired
     private MerchantOrderMapper merchantOrderMapper;
+    @Autowired
+    private MerchantDiscountMapper merchantDiscountMapper;
 
     /**
      * 初始化客户端获取商户端的信息列表
@@ -84,6 +88,28 @@ public class CustomerShopService {
         merchantOrder.setOpenid(openid);
         merchantOrder.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         merchantOrderMapper.addOrder(merchantOrder);
+        return ResultsUtils.success();
+    }
+
+    /**
+     * 查询优惠券
+     * @param authorization 小程序的唯一标识
+     * @param mId 商户的外键
+     * @return 请求处理的结果
+     */
+    public Map<String,Object> customerShopFindDiscountService(String authorization,Integer mId){
+        String openid = JWT.decode(authorization).getClaim("openid").asString();
+        List<MerchantDiscount> merchantDiscountList=merchantDiscountMapper.findDiscountByOpenidAndMId(openid,mId);
+        return ResultsUtils.successWhitData("discountList",merchantDiscountList);
+    }
+
+    /**
+     * 使用优惠券
+     * @param id 优惠券的id
+     * @return 请求处理结果
+     */
+    public Map<String,Object> customerShopDeleteDiscountService(Integer id){
+        merchantDiscountMapper.deleteDiscount(id);
         return ResultsUtils.success();
     }
 

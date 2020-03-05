@@ -58,6 +58,7 @@ public class MerchantSupplierController {
      */
     @DeleteMapping("/delete/{id}")
     public Map<String,Object> merchantSupplierDeleteController(@PathVariable("id") Integer id){
+        System.out.println(id);
         return merchantSupplierService.merchantSupplierDeleteService(id);
     }
 

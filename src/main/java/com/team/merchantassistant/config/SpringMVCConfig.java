@@ -22,6 +22,7 @@ public class SpringMVCConfig extends WebMvcConfigurationSupport {
         configurer.setUseSuffixPatternMatch(false);
     }
 
+    //在本地测试使用的资源文件，实际项目中会使用nginx实现动静分离
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/img/**").addResourceLocations("file:" + imgPath);

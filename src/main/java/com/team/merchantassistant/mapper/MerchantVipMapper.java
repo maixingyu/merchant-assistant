@@ -20,6 +20,14 @@ public interface MerchantVipMapper {
     List<MerchantVip> findVipByMid(@Param("m_id") Integer mId);
 
     /**
+     * 根据m_id查询openid
+     * @param mId 关联商户信息的外键
+     * @return openid
+     */
+    @Select("select openid from merchant_vip where m_id=#{m_id}")
+    List<MerchantVip> findOpenidByMid(@Param("m_id") Integer mId);
+
+    /**
      * 根据openid和m_id查询id
      * @param openid 微信小程序的唯一标识
      * @param mId 关联商户信息的外键
