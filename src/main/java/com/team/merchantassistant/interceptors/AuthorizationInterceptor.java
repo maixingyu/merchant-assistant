@@ -26,7 +26,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
         //获得请求页面的Url
         String referer = request.getHeader("referer");
-        if (referer != null && !referer.equals("")) {
+        if (referer != null && !"".equals(referer)) {
             if (referer.startsWith(origin)) {
                 response.setHeader("Access-control-Allow-Origin", origin);
             } else {

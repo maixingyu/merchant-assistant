@@ -17,7 +17,7 @@ weChat:
   appId: wx069b7dc66afc066d
   appSecret: 4b80b43c0ea1e3ede324f7f57df22dd6
 file:
-  imgPath: E:\\resources\\images\\
+  imgPath: E:\\ProjectResources\\merchant-assistant\\images\\
 header:
   origin: http://localhost:8080
 
